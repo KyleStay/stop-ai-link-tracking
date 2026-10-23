@@ -1,0 +1,10 @@
+{
+  "name": "ai-link-cleaner",
+  "version": "1.0.1",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check background.js && node --check cleaner.js && node --check dev-background.js",
+    "package": "python3 scripts/package.py"
+  }
+}
