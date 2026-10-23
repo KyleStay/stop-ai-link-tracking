@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 import unittest
 import zipfile
@@ -11,8 +13,13 @@ spec.loader.exec_module(package)
 
 
 class Packages(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        subprocess.run([sys.executable, str(ROOT/"scripts/package.py")], check=True, capture_output=True)
+
     def test_runtime_assets_permissions_and_versions(self):
-        original = json.loads((ROOT/'evidence/original-manifest.json').read_text())
+        # Production retains the narrow source permission contract; no local evidence dependency.
+        original = {'permissions': ['webNavigation'], 'host_permissions': ['http://*/*', 'https://*/*']}
         for channel in ('production','dev'):
             folder = ROOT/'dist'/channel
             manifest = json.loads((folder/'manifest.json').read_text())
